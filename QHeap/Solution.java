@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Solution {
 
-    static List<Integer> heap = new ArrayList<Integer>();
+    static LinkedList<Integer> heap = new LinkedList<Integer>();
 
     public static void qHeap(final int a, final int b) {
 
@@ -11,12 +11,15 @@ public class Solution {
         switch (a) {
             case 1:
                 heap.add(b);
+                Collections.sort(heap);
                 break;
             case 2:
                 heap.remove(Integer.valueOf(b));
                 break;
             case 3:
-                System.out.println(Collections.min(heap));
+                // System.out.println(Collections.min(heap));
+                System.out.println(heap.element());
+                break;
         }
     }
 
