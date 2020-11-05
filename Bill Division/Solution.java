@@ -31,8 +31,6 @@ public class Solution {
 
         String[] nk = sc.nextLine().replaceAll("\\s+$", "").split(" ");
 
-        int n = Integer.parseInt(nk[0]);
-
         int k = Integer.parseInt(nk[1]);
 
         List<Integer> bill = Stream.of(sc.nextLine().replaceAll("\\s+$", "").split(" ")).map(Integer::parseInt)
