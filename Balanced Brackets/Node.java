@@ -1,13 +1,13 @@
 public class Node {
-    int value;
+    char value;
     Node next;
 
-    public void addNode(int value) {
+    public void addNode(char value) {
         this.value = value;
         this.next = null;
     }
 
-    public Node(int value) {
+    public Node(char value) {
         this.value = value;
         this.next = null;
     }
