@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Solution {
@@ -25,8 +27,6 @@ public class Solution {
     // }
     // }
 
-    // Hackerrank submission
-    private static final Scanner scanner = new Scanner(System.in);
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static Stack stack;
 
@@ -118,16 +118,27 @@ public class Solution {
         return new Stack();
     }
 
+    public boolean isEmpty() {
+        return stack.head == null ? true : false;
+    }
+
     public static void main(String[] args) throws IOException {
         /*
          * Enter your code here. Read input from STDIN. Print output to STDOUT. Your
          * class should be named Solution.
          */
 
-        int n = scanner.nextInt();
+        // int n = scanner.nextInt();
+        String n_ = br.readLine();
+        String[] strs_ = n_.trim().split("\\s+");
+        int n = Integer.parseInt(strs_[0]);
+        int max = 0;
+        // scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 
         Solution s = new Solution();
         stack = s.createStack();
+
+        List<Integer> res = new ArrayList<>();
 
         while (n-- > 0) {
             String lines = br.readLine();
@@ -137,11 +148,23 @@ public class Solution {
                 int digit = Integer.parseInt(strs[1]);
                 Node node = s.addNodeCaller(digit);
                 s.pushCaller(node);
+                max = Math.max(max, digit);
             } else if (type == 2) {
                 s.popCaller();
+                if (s.isEmpty())
+                    max = 0;
+                else
+                    max = s.maxElementCaller();
             } else {
-                System.out.println(s.maxElementCaller());
+                if (!s.isEmpty())
+                    System.out.println(max);
+                // System.out.println(max);
+                // res.add(s.maxElementCaller());
             }
+        }
+
+        for (Integer integer : res) {
+            System.out.println(integer);
         }
 
     }
