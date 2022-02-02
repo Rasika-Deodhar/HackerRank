@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Stack;
 
 public class Solution {
@@ -33,30 +34,44 @@ public class Solution {
                 String[] s = _s.trim().split("\\s+");
                 for (String string : s) {
                     valueStack.push(string);
-                    operationStack.push(new HashMap<Integer, String>() {
-                        {
-                            put(1, string);
-                        }
-                    });
                 }
+                operationStack.push(new HashMap<Integer, String>() {
+                    {
+                        put(1, _s);
+                    }
+                });
 
             } else if (type == 2 && valueStack.peek() != null) {
                 int a = Integer.parseInt(strs[1]);
-                // String s = "";
+                String s = "";
                 while (--a > 0 && valueStack.peek() != null) {
-                    // s = valueStack.pop();
-                    operationStack.push(new HashMap<Integer, String>() {
-                        {
-                            put(2, valueStack.pop());
-                        }
-                    });
+                    valueStack.pop();
                 }
+                Iterator i = valueStack.iterator();
+                while (i.hasNext()) {
+                    System.out.println(i.next());
+                }
+                operationStack.push(new HashMap<Integer, String>() {
+                    {
+                        put(2, valueStack.peek());
+                    }
+                });
             } else if (type == 3 && valueStack.peek() != null) {
-                System.out.println(valueStack.listIterator(1));
+                Iterator i = valueStack.iterator();
+                int a = Integer.parseInt(strs[1]);
+                while (i.hasNext() && --a > 0) {
+                    i.next();
+                }
+                System.out.println(i.next());
             } else if (type == 3 && operationStack.peek() != null) {
                 HashMap<Integer, String> h = operationStack.pop();
-                if (h.containsKey(1))
-                    valueStack.push(h.get(1));
+                if (h.containsKey(1)) {
+                    String s = h.get(1);
+                    for (String string : s) {
+                        valueStack.push(string);
+                    }
+                }
+
                 else
                     valueStack.push(h.get(2));
             }
