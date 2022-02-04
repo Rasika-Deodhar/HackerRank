@@ -38,88 +38,70 @@ class Result {
             System.out.print(h3.get(i) + " ");
         }
 
+        // Cumulative Sum of Height STack -> Ref ->
+        // https://www.youtube.com/watch?v=zZhnb_8d6CU
+
         int h1_height = h1.stream().mapToInt(a -> a).sum();
         int h2_height = h2.stream().mapToInt(a -> a).sum();
         int h3_height = h3.stream().mapToInt(a -> a).sum();
 
-        // Check the total height of all 3 stacks
-        // If equal then return height
-        // Else
-        //// If first 2 are same ->
-        //// If A,B > C -> remove from A and B
-        //// Else remove from C
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        Stack<Integer> s3 = new Stack<>();
 
-        //// If first and third are same ->
-        //// If A,C > B -> Remove from A and C
-        //// Else remove from B
+        fillSumStacks(s1, h1, s2, h2, s3, h3);
 
-        //// If second and third are same ->
-        //// If B,C > A -> Remove from B and C
-        //// Else remove from A
-
-        if (h1_height == h2_height && h2_height == h3_height) {
-            return h1_height;
+        System.out.println("The cumulative sum of 3 stacks are -");
+        for (int i = 0; i < s1.size(); i++) {
+            System.out.print(s1.get(i) + " ");
         }
-        if (h1_height == 0 || h2_height == 0 || h3_height == 0) {
-            return 0;
+        System.out.println();
+        for (int i = 0; i < s2.size(); i++) {
+            System.out.print(s2.get(i) + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < s3.size(); i++) {
+            System.out.print(s3.get(i) + " ");
         }
 
-        do {
-            if (h1_height == h2_height) {
-                if (h1_height > h3_height) {
-                    if ((h1_height - h1.get(0) == h2_height - h2.get(0)) && (h1_height - h1.get(0) == h3_height)) {
-                        return h3_height;
-                    }
-                    h1_height -= h1.get(0);
-                    h1.remove(0);
-                    h2_height -= h2.get(0);
-                    h2.remove(0);
-                } else {
-                    h3_height -= h3.get(0);
-                    h3.remove(0);
-                }
-            } else if (h1_height == h3_height) {
-                if (h1_height > h2_height) {
-                    if ((h1_height - h1.get(0) == h3_height - h3.get(0)) && (h1_height - h1.get(0) == h2_height)) {
-                        return h2_height;
-                    }
-                    h1_height -= h1.get(0);
-                    h1.remove(0);
-                    h3_height -= h3.get(0);
-                    h3.remove(0);
-                } else {
-                    h2_height -= h2.get(0);
-                    h2.remove(0);
-                }
-            } else if (h2_height == h3_height) {
-                if (h2_height > h1_height) {
-                    if ((h2_height - h2.get(0) == h1_height - h1.get(0)) && (h2_height - h2.get(0) == h1_height)) {
-                        return h1_height;
-                    }
-                    h2_height -= h2.get(0);
-                    h2.remove(0);
-                    h3_height -= h3.get(0);
-                    h3.remove(0);
-                } else {
-                    h1_height -= h1.get(0);
-                    h1.remove(0);
-                }
-            } else {
-                if (h1_height > h2_height && h1_height > h3_height) {
-                    h1_height -= h1.get(0);
-                    h1.remove(0);
-                } else if (h2_height > h1_height && h2_height > h3_height) {
-                    h2_height -= h2.get(0);
-                    h2.remove(0);
-                } else if (h3_height > h2_height && h3_height > h1_height) {
-                    h3_height -= h3.get(0);
-                    h3.remove(0);
-                }
+        while (!s1.isEmpty() && !s2.isEmpty() && !s3.isEmpty()) {
+            int s1_height = s1.peek();
+            int s2_height = s2.peek();
+            int s3_height = s3.peek();
+
+            if (s1_height == s2_height && s2_height == s3_height && s1_height == s3_height) {
+                return s1_height;
             }
 
-        } while (h1_height != 0 && h2_height != 0 && h3_height != 0);
+            if (s1_height > s2_height && s1_height > s3_height) {
+                s1.pop();
+            } else if (s2_height > s1_height && s2_height > s3_height) {
+                s2.pop();
+            } else if (s3_height > s2_height && s3_height > s1_height) {
+                s3.pop();
+            }
+        }
 
         return 0;
+
+    }
+
+    private static void fillSumStacks(Stack<Integer> s1, List<Integer> h1, Stack<Integer> s2, List<Integer> h2,
+            Stack<Integer> s3, List<Integer> h3) {
+        fillStack(s1, h1);
+        fillStack(s2, h2);
+        fillStack(s3, h3);
+
+    }
+
+    private static void fillStack(Stack<Integer> s, List<Integer> h) {
+        Collections.reverse(h);
+        Integer sum = 0;
+
+        for (int i = 0; i < h.size(); i++) {
+            sum += h.get(i);
+            s.push(sum);
+        }
     }
 
 }
